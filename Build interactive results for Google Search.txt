@@ -1,0 +1,146 @@
+Android Slices: build interactive results for Google Search
+https://www.youtube.com/watch?v=a7IVH5aNwwc
+
+What are Android Slices? (0:30)
+	- Android's new approach to remote content
+		- templated
+		- interactive
+		- updatable
+	backwards compatible through KitKat 19 (95% of devices)
+
+	- Templated (1:35)
+		Enables rich and flexible layouts
+
+	- Interactive (2:00)
+		Real-time data, deep-links, inline actions, toggles, sliders, and scrolling content
+
+	- Updatable
+		bundled with Jetpack
+
+
+Launching in Search (3:05)
+	Enhance predictions with rich app content
+
+
+Example use cases (3:45)
+
+
+The goal? One, resusable API to generalize for how we present remote app content in Android.
+
+
+Slices Architecture (5:00)
+	- Slices Structure
+		- Slices are structured data made of other slices, content, and presentational hints
+
+		slice (shortcut, title) {
+			PendingIntent(...),
+			slice {
+				Icon(...) (no_tint),
+				"Weather is happening!" (title),
+			}
+		}
+
+	- Archtectural Overview (6:24)
+		- Slice presenters fetch Slices by calling the System API with the Slice URI.
+
+
+Creating Slices (7:20)
+	- Interactive Wi-Fi example
+
+	<!-- Slices definition -->
+	<provider android:name-".MySliceProvider"
+		android:authority="com.example.slicesample"
+		android:exported="true" />
+
+	class MySliceProvider : SliceProvider() {
+		fun onBindSlice(uri: Uri): Slice? {
+			if (uri.path == "/wifi") {
+				return buildWifiSlice(uri)
+			} else if (uri.path == "/alarms") {
+				return buildAlarmSlice(uri)
+			} else if (uri.path == "/nightlight") {
+				return buildNightlightSlice(uri)
+			}
+
+			...
+
+			return null
+		}
+	}
+
+	fun buildWifiSlice(sliceUri: Uri) : Slice {
+		val listBuilder = ListBuilder(context, sliceUri, INFINITY)
+		val row = RowBUilder(listBuilder).setTitle("Wi-Fi")
+		if (!sWifiStateLoaded) {
+			loadWifiState()
+			row.setSubtitle(null, true /* isLoading */)
+			   .addEndItem(null, true /* isLoading */)
+		} else {
+			row.setSubtitle(isWifiConnected() ? "Connected" : "Disconnected")
+			   .addEndItem(getWifiToggleAction())
+		}
+
+		listBuilder.add(row)
+		return listBuilder.build()
+	}
+
+	fun onWifiStateLoaded(): Unit {
+		sWifiStateLoaded = true
+		// notify our Uri to trigger an update
+		context.contentResolver.notifyChange(Uri.parse("content://com.example.slicesample/wifi"), context), null))
+	}
+
+	fun getToggleWifiIntent(): SliceAction {
+		val toggleIntent = PendingIntent.getBroadcast(context, 0, Intent(context, MyBroadcastReceiver::class.java), 0)
+		return SliceAction(toggleIntent, "Toggle Wi-Fi", isWifiConnected())
+	}
+
+	MyBroadcastReceiver.kt (11:30)
+
+
+Slice Viewer (12:15)
+	Presenter app to preview your Slices
+	https://developer.android.com/guide/slices/getting-started
+
+
+Templates (13:05)
+	- Express your app through our flexible system
+
+	- Expect to be shown in multiple formats (14:50)
+		- shortcut
+		- small
+		- large
+
+	- Expcet to be lightly customized by presenters
+		- Presenters may customize the style of apps' Slices to mathc their design requirements: default & customized style
+
+	Rich content example (15:35)
+
+
+Slices in Google Search (16:55)
+	- Enhance Search predictions with rich app content
+		- appear in Autocomplete along with web and query predictions
+		- apps must be installed on device
+
+	- App Names: Canonical Slice for your app (17:30)
+		- add one meta-data in manifest
+
+	- General terms (18:20)
+		- respond to general queries that may relate to a specific feature in your app
+		- ranking dependent on confidence and may very depending on query terms
+		- requires
+			- integration with Firebase App Indexing
+			- push Indexable (Slice UIR, query terms)
+			- update Indexable as content changes
+
+
+Permissions (20:48)
+	- What apps should do (22:05)
+		- extend SliceProvider: handles permissions for all callers
+		- don't add permission guards to manifest
+		- SliceProvider#onCreatePermissionRequest: allows disabling/override of user grant
+
+
+Learn more at g.co/Slices
+
+
