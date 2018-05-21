@@ -1,0 +1,111 @@
+Android Jetpack: what’s new in Android Support Library
+https://www.youtube.com/watch?v=jdKUm8tGogw
+
+support-vXX all requires android:minSdkVersion=14 (2:30)
+
+
+Packaging (4:00)
+
+Whats' new in AndroidX
+
+Jetpack
+ - Guideance
+ - Recommended libraries and tools
+
+AndroidX
+ - Libraries
+ - Technical guarantees
+ 
+
+Finer-grained artifacts (5:20)
+ - Feature based Maven groupId and artifcatId
+ - Scoped to individual widgets, use cases
+ - Compatible withold artifacts
+ - Binary compatible
+
+https://developer.android.com/topic/libraries/support-library/packages
+
+
+Refined versioning
+ - Resets from 28.0.0 to 1.0.0
+ - Strict semantic versioning
+   - Major - binary compatibility
+   - Minor - feature release
+   - Bug fix
+ - Per-artifact versioning & release
+ - Dependencies defined in POM
+
+
+Updated Packaging (8:15)
+ - Refactored to androidx Java packages
+   - androidx.<feature>.ClassName
+ - Consistent Maven naming schemes
+   - androidx.<feature>:<feature>-<sub-feature>
+ - Removed -v7, -v4, etc. naming
+
+
+Automated refactoring AS 3.2 Canary 14
+  Recator -> Refactor to AndroidX
+
+Jetifier: binary (jar, aar) migration tool (available via Google Maven)
+
+Migration Demo (12:45)
+
+See also
+ What's new with the Android build system (https://www.youtube.com/watch?v=N5xONyp69eU)
+
+
+New features (16:30)
+
+ RecyclerView Selection
+   - band selection
+   - item selection area
+   - item rejection
+   - state management
+   - much more...
+
+ RecyclerView ListAdapter
+   - operates on immutable lists
+   - simplified way to use DiffUtil
+   - provides animated updates
+   - concurrency support
+
+See also
+  Android Jetpack: manage infinite lists with RecyclerView and Paging (https://www.youtube.com/watch?v=BE5bsyGGLf4)
+
+
+androidx.webkit (20:30)
+  - provides access to latest WebView platform APIs
+  - relies on updatable WebView APK (21+ only)
+
+
+Browser library (formerly known as CustomTab)
+  - android.support.customtabs -> androidx.browser
+  - custom tabs supported by major browsers (Chrome, FIrefox, Samsung Internet)
+
+
+Browser actions (22:05)
+  - allows apps to hook into browser context-click menu
+  - requires browser support (Chrome 66+)
+
+
+HeifWriter (reads heef) (23:18)
+  28+ only for now (backport coming)
+
+
+Slices (24:20)
+
+See also
+  Android Slices: build interactive results for Google Search (https://www.youtube.com/watch?v=a7IVH5aNwwc)
+
+
+Material Components
+  - adding more customjization for color, type, and shape
+  - new components
+  - animations
+  - express your brand
+
+Sample screenshot (29:40)
+
+See also
+  How to incorporate what's new with Material Design in your code base (https://www.youtube.com/watch?v=D7LB-QPxH9c)

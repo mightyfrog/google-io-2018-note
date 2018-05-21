@@ -1,0 +1,74 @@
+Android Jetpack: manage UI navigation with Navigation Controller
+https://www.youtube.com/watch?v=8GCXtCjtg40
+
+Define navigation graph with visual tool/XML (3:55)
+
+
+Navigation Graph (4:50)
+ A navigation graph is a blueprint of possible navigation destinations and the actions that link them.
+
+Navigation Editor Demo (5:10)
+
+
+The role of the Activity (8:10)
+ And entry point to your app - The Activity manages any global navigation (bottom nav, navigation drawer, etc), but delegates to a NavHost for content.
+
+ androidx.navigation.fragment.NavHostFragment
+   - can define defaultNavHost=true to let Android handle the back button
+
+ 
+ navigation-ui
+   A set of static methods to connect Navigation with Material Design Components
+
+
+ Navigating with NavController (15:09)
+
+  button.setOnCLickListener {
+    Navigation.createNavigationOnClickListener(R.id.next)
+  }
+
+  button.setOnClickListener {
+    val nc = v.findNavContorller()
+    nc.navigat(R.id.next)
+  }
+
+
+Safe Args (17:50)
+ gradle plugin
+
+ Type Safe Args
+  can specify bundle argument name and type in xml
+  Android generates XXXArgs class for XXX fragment
+
+    val args: HelperFragmentArgs = HelperFragmentArgs.fromBundle(arguments)
+    val screenName: String = args.screenName
+    val category: Int = args.category
+
+  
+ Deep Linking (20:50)
+   Two types of deep links
+     Explicit: Notifications, App shortcuts, App Widgets, Actions, Slices
+     Implicit: Web URLs, Custom Scheme URIs
+
+Explicit Deep Links with NavDeepLinkBuilder (22:27)
+  Deep link to a specific destination in your navigation graph by its ID
+
+Implicit Deep Links (23:55)
+  Using <deepLink> in your navigation graph - associating destinations with one or more URIs
+  <deepLink app:uri="www.iana.org/domains/{myarg}" android:autoVerify="true" /> // you can skip http/https
+  also works with custom shcemes
+
+Manifest can auto-generate intent filters from the navigation graph file.
+
+
+
+Testing (27:30)
+
+
+What's next (29:40)
+  1.0.0-alpha01 available now
+
+
+Requires AS 3.2
+
+

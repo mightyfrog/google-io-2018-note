@@ -1,0 +1,121 @@
+Android Jetpack: how to smartly use Fragments in your UI
+https://www.youtube.com/watch?v=WVPH48lUzGY
+
+
+Factoring Activities (6:00)
+	Receipe for breaking up monotliths:
+		- move loosely related code to separate fragments
+		- repeat
+
+
+Things Framgents do (7:40)
+	- lifecycle hooks
+	- back stack management
+	- retain objects across configuration changes
+	- (Instance-)Stateful presence in the FragmentManager
+	- manage a view subtree
+	- inflatable, resuable components for layout
+
+
+Architecture Components
+	- LifecycleObservers
+		- last in, first out callback ordering
+		- created by you, not recreated via reflection
+		- NO stateful restoration by the system
+	- ViewModel
+		- instances created by factory you provide
+		- LiveData allows easy (lifecycle-aware) reconnection
+		- replace retained instnace Fragments
+	- Navigation
+		- works well with fragments
+		- replaces back stack transactions
+
+
+Dependencies
+	Q: Does a child fragment's onCreate run before or after its parent?
+	A: Is the parent an Activity or Fragment? What version?
+
+
+Retained Instance Fragment (16:10)
+	- Save handles to expensive data/operations
+	- Reconnect to those operations after config change
+	- WARNING: No UI!
+
+
+Fragment transations (21:50)
+	- benefits of async
+		- No reentrant fragment operations
+	- drawbacks
+		- observed state does not reflect queued transactions
+
+
+Why Fragments in 2018? (28:40)
+	android.widget vs. android.app
+		android.widget - Mechanism
+			- shows state to the other
+			- reports user interaction events
+		android.app - Policy
+			- defines state to bind to widgets
+			- responds to user interaction and issues changes to model
+
+	Inflatable components
+		advantages of fragments:
+			- composed high-level controls
+			- self-sufficient
+			- lifecycle-aware
+			- inflated attributes can become Fragment arguments
+		Cross-cuttng UI policy:
+			- Self-sufficient components
+			- Ads
+			- Independent info cards
+			- parent doesn't need to be involved in data routing from repository
+
+
+App Screens (32:29)
+	- Single-Activity apps
+	- Common app chrome, decoupled destinations
+	- Transcations and animations managed by Navigation, not by hand
+	- Can inflate sub-components to help
+
+
+DialgoFragment
+	- interaction with another...
+		- floating UI
+		- system interaction
+	- leverage instance state restoration
+	- dialogs, bottom sheets
+	- transient UIs you don't want to lose
+
+
+Options Menus
+	- framents support options menus
+	- common use case: setSupportActionBar
+		- useful for fixed common chrome
+		- FragmentPagerAdapter
+    - alternative:
+    	- directly manage menus as Toolbar View data
+
+
+Testing Fragments
+	- FragmentController drives lifecycle
+	- Test your larger components in greater isolation
+	- possible, if not the best interface
+
+
+Loaders
+	- rebuilt on top of LiveData and ViewModel
+	- use Loaders from any LifecycleOwner + ViewModelStoreOwner
+
+
+Where are we going? (42:29)
+	- separate desired behavior from incidnetal behavior
+	- reimplementing existing APIs on top of new primitives
+		- LoaderManager
+	- make primitive singals and Activity callbacks availabel to any interested component
+	- if you don't like Fragments, write your own!
+		- no more magic
+		- use the same composable hooks
+	- fragments + your components working together
+	- options menus
+		- no great answer for this yet
+	- android.app.FragmentManager deprecated

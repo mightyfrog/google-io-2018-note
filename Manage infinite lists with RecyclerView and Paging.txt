@@ -1,0 +1,67 @@
+Android Jetpack: manage infinite lists with RecyclerView and Paging
+https://www.youtube.com/watch?v=BE5bsyGGLf4
+
+ListAdapter (3:44)
+	- takes immutable lists
+	- provides animated updates
+	- computes diff in background
+	- available in support library 27.1
+	- see also AsyncListDiffer
+
+
+PagedList (5:25)
+	- List<> which loads data in pages, async
+	- backed by a DataSource
+
+
+Configuration (8:10)
+	- page size
+	- initial load size hint (default = page size * 3)
+	- prefetch distance (default = page size)
+	- enable placeholders (default = true)
+
+
+Placeholders (10:00)
+	- Positives
+		- user can scroll past what's loaded
+		- scrollbar looks correct
+		- doesn't need loading spinner
+	- Negatives
+		- items should be the same size
+		- adapters must handle null items
+		- DataSource must count items (can't count items if data is from network)
+
+
+What about RxJava? (11:22)
+	
+
+Under the hood (11:58)
+	- looks like LiveData<List>
+	- construct and configure in repository
+	- adapter handles new PagedLists, and internal updates
+
+
+PageKeyedDataSource<String, Item> for fetching data over the network, GitHub API, reddit API
+
+
+Database + Network (24:28)
+	- need out-of-data signal from DB
+	- triggers network load to DB
+	- paging calls this signal BoundaryCallback
+
+
+BoundaryCallback (27:22)
+
+
+https://d.android.com/arch/paging
+
+https://codelabs.developers.google.com/codelabs/android-paging
+
+https://github.com/googlesamples/android-architecture-components
+
+
+Cursor's built-in paging
+	- unpredictable and inefficient with large queries
+	- Paging + Room avoid issue with small queries
+	- P release fixes this unpredictability/inefficiency
+	- for more, see blog post https://medium.com/google-developers/large-database-queries-on-android-cb043ae626e8

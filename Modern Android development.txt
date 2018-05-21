@@ -1,0 +1,128 @@
+Modern Android development: Android Jetpack, Kotlin, and more
+https://www.youtube.com/watch?v=IrMw7MEgADk
+
+Android history (3:20)
+
+
+Examining view hierarchy (4:50)
+ - old approach: Hierarchy Viewer (https://developer.android.com/studio/profile/hierarchy-viewer)
+ - new approach: Layout Inspector (https://developer.android.com/studio/debug/layout-inspector)
+
+
+Profiling code (5:20)
+ - old ways: traceview, systrace
+ - new way: AS 3.1 profiler
+
+
+Memory tracking (8:20)
+ - old way: DDMS (Eclipse)
+ - new way: AS memory tracker
+
+
+Layout design (9:20)
+ - ConstraintLayout editor
+ - new layout editor P
+
+
+Runtime & language (10:30)
+ - Dalvik
+   - JIT Optimizations not as powerful
+   - slow allocation/collection
+   - heap fragmentation
+
+ -> avoid allocation whenever possible
+   - don't use enums
+   - primitive types are cool
+   - autoboxing is not cool
+
+ - ART (Kitkat+)
+   - JIT + AOT
+   - faster allocation/collection
+   - heap defragmentation
+   - large object heap
+
+-> allocate as necessary (enums ok)
+   use appropriate types
+   but:
+     phones are still constrained
+     battery are too
+
+
+Kotlin (16:00)
+ - inline
+ - operator overloading
+ - Android KTX
+ - data class
+ - lambda
+ - new Java APIs will have an interface parameter at the end
+ - Kotlin style guide: https:// android.github.io/kotlin-guides
+ - Interop guide: https://android.github.io/kotlin-guides
+
+See also
+  Android jetpack: sweetening Kotlin development with Android KTX (https://www.youtube.com/watch?v=st1XVfkDWqk)
+
+
+Layouts (20:30)
+ - AbsolutLayout (DON'T USE IT) it's not removed because WebView still uses it
+ - LinearLayout (OK for simple cases)
+ - FrameLayout (OK)
+ - GridLayout (Better with tools but it doesn't exist)
+ - RelativeLayout (Use ConstraintLayout)
+
+
+Adapter Views (25:00)
+ - ListView
+ - GridView
+ - Gallery
+
+
+Fragments (26:50)
+ - Core platform API deprecated, use support library
+ - new Navigation component simplifies fragment transactions
+
+
+Activities (27:55)
+ - Use single activities when possible
+   - One per entry point
+   - Richer, more continuous user experience
+   - Fragments are not necessary, but can help
+
+See also
+  Android jetpack: manage UI navigation with Navigation Contrller (https://www.youtube.com/watch?v=8GCXtCjtg40)
+
+
+Architecture (29:50)
+
+ Handling Android LIfecycle
+   - LifecycleOwner
+
+ Views and Data
+   - LiveData 
+
+ Data
+   - Room
+
+ Data Paging
+   - CursorAdapter: Good: Cursor support, Bad: ListView only, runs on UI thread, Inefficient
+   - AsyncListUtil: Good: Cursor support, RecyclerView support, off UI thread, Bad: Web-unfriendly
+   - Paging LIbrary
+     - RecyclerView support
+     - Fine-grained item changes, binding
+     - Background threads
+     - Observer chagned via LiveData or RxJava2
+     - Flexible data fetching options
+     - Integration with Room
+
+See also
+  Guide to App Architecture (https://developer.android.com/topic/libraries/architecture/guide.html)
+
+
+Graphics
+  Recommended libraries: Picasso, Glide, Lotti
+
+
+Best Coding Practices
+  - Profile your code
+  - Avoid work when possible
+  - Minimize memory consumption
+  - Devices are resource constrained, battery life is critical, bandwidth is precious, user experience matters

@@ -1,0 +1,161 @@
+Best practices for text on Android
+https://www.youtube.com/watch?v=x-FcOX6ErdI
+
+Text architecture (1:00)
+	Two parts
+		Java
+			|__TextView
+			|
+			|__Layout, Paint, Canvas
+		Native
+			|__Minikin (C++): word measurements, line breaking, hyphenation
+			|
+			|__ICU: unicode
+			|
+			|__HarfBuzz: text shaping
+			|
+			|__FreeType: generates bitmaps for all the glyphs
+			|
+			|__Skia: graphics engine
+
+Support library doesn't allow native code
+
+TextMeasurement (2:30)
+	Word Layout Cache (3:28)
+		System wide word layout LRU cache (5K items) Since Android L
+	Line breaking (3:50)
+		Android M breakStrategy: simple, balanced, high_quality (default)
+	HyphenationFrequency: none, normal, full (default)
+
+	Line breaking & hypenation performance (P): default configuration 2.5X
+
+	Locale (4:45)
+		used for line breaking, hypenation, font selection
+
+		setTextLocale for daynamically loaded text
+
+	Multi Language (5:25)
+		use LocaleSpan and/or setTextLocale
+
+
+Styling text (5:30)
+	Only framework spans are parceled.
+
+Interfaces (10:30)
+	SpannableString holds an array of spans
+	SpannableStringBuilder holds a tree of spans
+
+	SpannableString vs SpannableStringBuilder performance chart (11:42)
+		up to 250 spans, they perform the same
+		after 250 spans, they start diverge -> SpannableString is better
+
+
+Checking for spans (12:10)
+	suboptimal: Spanned.getSpans
+	optimal: Spanned.nextSpanTransition
+
+
+Styling internationalized text (12:54)
+	use <annotation> tag to specify font
+
+	// values-en/strings.xml
+	<string name="title">Best practices for <annotation font="font_name">text</annotation> in Android</string
+
+	// values-es/strings.xml
+	<string name="title"><annotation font="font_name">Texto</annotation> en Android: Mejores practicas</string
+
+	val titleText = getText(R.string.title) as SpannedString
+	val annotations = titleText.getSpans(0, titleText.length, Annotation::class.java)
+	for (annotation in annotations) {
+		if (annotation.key.equals("font")) {
+			val fontName = annotation.value
+			val typeface = ...
+			spannable.setSpan(TypefaceSpan(typeface)),
+				abstract.getSpanStart(annotation),
+				abstract.getSpanEnd(annotation),
+				Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+		}
+	}
+
+
+Text Layout in View (14:10)
+	Text Layout Classes (15:02)
+		BoringLayout: simple text: no \t, \n, RTL, Bidi...
+		DynamicLayout: editable,selectable text
+		StaticLayout: used for the rest of the above
+
+	android:fallbackLineSpacing="true" (turned on by default)
+
+	elegantTextHeight
+
+	android:firstBaselineToTopHeight="60sp"
+	android:lastBaselineToBottomHeight="20sp"
+
+	Rounded background (18:00)
+		can't be implmented with spans. use Layout functions.
+
+
+TextView measure/layout/draw (19:33)
+	onMeasure: majority of work, expensive - (re)create text layout type, decide width and height
+	onLayout: almost no work - scroll, autosize
+	onDraw: align text in view, layout.draw() - layout.draw() resuses results in text layout cache
+
+	What triggers measure/draw
+		onMeasure: anything that can change text layout - text, letter spacing, text size, locale, padding...
+		onDraw: anything that requires a redraw - things that causes onMeasure + text color
+
+	Layout.getDesiredWidth
+
+	Measurement relative performance comparition chart (23:00)
+
+
+Premeasured Text
+	run premesurement on no UI thread and pass the result to TextView (90% performance gain)
+
+	Long text: performance issues
+		solution: use RecyclerView
+
+
+How to draw text? (26:33)
+	- Canvas.drawText(): doesn't draw multi styled text
+	- Layout.draw(): StaticLayout and DynamicLayout draw multi styled text
+
+
+Setting text for performance (27:08)
+	Styled text in RecyclerView (29:30)
+
+	Don't use autoLink in RecyclerView
+	-> extract links when preparing the UI data, on a background thread
+		val spannable = SpannableString(string)
+		LinkifyCompat.addLinks(spannable, Linkify.WEB_URLS)
+
+		override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+			holder.textView.setText(spannable, BufferType.SPANNABLE)
+			// ...
+		}
+
+	Don't use "all" or "map" anywhere
+
+
+SmartLinkify (31:31)
+	
+		// UI thread
+		val text: Spannable = ...
+		val request = TextLinks.Request.Builder(text)
+		val ref = WeakReference(textView)
+		executor.execute {
+			// background thread
+			TextClassifier.generateLinks(request).apply(text)
+			val textView = ref.get()
+			textView?.post {
+				// UI thread
+				val textView = ref.get()
+				textView?.text = text
+			}
+		}
+
+
+Magnifier (33:04)
+	enabled by default for TextView, EditText, WebView
+
+	magnifier.show(x, y)/.update(x, y)/.dismiss() <- onTouchEvent

@@ -1,0 +1,263 @@
+Google I/O 2018
+
+What's new in Android
+https://www.youtube.com/watch?v=eMHsnvhcf78
+
+Android App Bundles
+
+リファクタリング
+android.support.v4.*
+android.support.v9.*
+// etc
+
+⇒　andoridx.*
+
+See also
+  What's new in Android Support Library (https://www.youtube.com/watch?v=jdKUm8tGogw)
+  Hellow World, AndroidX (https://android-developers.googleblog.com/2018/05/hello-world-androidx.html)
+
+
+
+Android Test
+
+Frist class Kotlin support
+
+ボイラープレートを減らすAPI群の追加
+
+ before: assertEquals(view.getVisibility(), View.VISIBLE); -> "Failed Expected 0 but was 16" 意味不明なメッセージ
+
+ now   : assertThat(view).isVisible(); -> "Failed, view was not visible"　メッセージの改善
+
+See alos
+  Frictionless Android testing: write once, run everywhere (https://www.youtube.com/watch?v=wYMIadv9iF8)
+
+
+
+
+Jetpack Architeture
+
+Lifecycles, ViewModel, Room, LiveData, Paging + "WorkManager"
+
+See also
+  What's new in Android Architecture Components (https://www.youtube.com/watch?v=pErTyQpA390)
+  Easy background processing with WorkManager (https://www.youtube.com/watch?v=IrKoBFLwTN0)
+  Manging UI navigation with Navigation Controller (https://www.youtube.com/watch?v=8GCXtCjtg40)
+  Manage infinite lists with RecyclerView and Paging (https://www.youtube.com/watch?v=BE5bsyGGLf4)
+
+
+
+Core Platform
+
+Battery
+
+  App standby buckets - usage determines access to jobs, alarms, network, messaging
+  Background restrictions - user can restrict bacdly-behaving apps
+
+See also
+  https://www.youtube.com/watch?v=9Ac6leZIgJw
+
+
+Background Input & Privacy
+
+　以下のものへのバックグラウンドアクセス禁止: Mic, Camera, Sensor
+
+
+
+Kotlin
+
+プラットフォームの改善: ART, D8 & R8, Support library and libcore, nullabilityアノテーションカバレッジの拡大, Android KTX
+
+
+See also
+  Sweetening Kotlin development with Android KTX (https://www.youtube.com/watch?v=st1XVfkDWqk) 
+
+
+
+Mockable Framework
+
+モックのための新機能追加: Finalメソッド, staticメソッド（予定）,　システムが生成するオブジェクト, Activity（最終的には）
+
+
+
+Background Text Measurement
+
+  Text mesurement is expensive: Up to 80 to 90% of the draw/measure/layout loop
+
+  Pre-computed text API offloads most of the work to a worker thread: PrecomputedText.create(...)
+
+  Mafnifier: easier manipulation of cursor
+
+  Baseline Distance:
+
+     val tv: TextView
+     tv.firstBaselineToTopHeight = distancePx
+     tv.lastBaselineToBottomHeight = distancePx
+
+  Smart linkify
+  
+  val text = Spannable(...)
+  val request = TextLinks.Request.Builder(text)
+  executor.execute {
+    TextClassifier.generateLinks(request).apply(tet)
+    tv.post {
+      tv.text = text
+    }
+  }
+
+See also
+  Best practices for text on Android (https://www.youtube.com/watch?v=x-FcOX6ErdI)
+
+
+
+Location
+   Wi-Fi RTT APIs
+
+
+
+Accessibility
+  https://www.youtube.com/watch?v=Lcoc4aCLfqI
+
+
+
+Security
+  Unified BiometricDialog provides stronger proctection for private keys, StrongBox backend
+  -> FingerprintManager deprecated
+
+  Build.SERIAL doesn't work anymore (w/o READ_PHONE_STATE permission)
+
+
+
+Display Cutout (aka the notch)
+  
+  WidowInsets#getDisplayCutout()
+
+  android:windowLayoutInDisplayCutoutMode
+    - "never"
+    - "default"
+    - "shortEdges" + DisplayCutout#getSafeInsets()
+    - "shortEdges" + DisplayCutout#getBounds()
+
+
+
+Slices
+
+  A new approach to remote content
+    - w/i an app or between apps
+    - structured data, flexible templates
+    - interactive, updatable
+    - addressabel by content URI
+    - backwords-compatible (support lib Kitkat+)
+
+See also
+  Android Slices: build interactive results for Google Search (https://www.youtube.com/watch?v=a7IVH5aNwwc)
+
+
+
+Actions
+  Deeps links into your app
+    - shortcuts with parameters
+    - a visible Intent
+  Defines actions in actions.xml
+  Register with App Indexing to show as on-device search results
+
+See also
+   Integrating your Android apps with the Google Assistant (https://www.youtube.com/watch?v=v0uYZ4rTOrk)
+
+
+
+Notifications
+  - Inline images/stickers
+  - participant images
+  - smart reply UI (RemoteInput.setChoices())
+
+
+
+Deprecatio Policy
+  Apps will soon be required to target newer versions of Android
+    August 2018 -> API 26 for new apps
+    November 2018 -> API 26 for app updates
+  Native component requirements
+    August 2019 -> 64-bit ABI required
+
+See also
+  Migrating your existing apps to target Android Ore and above (https://www.youtube.com/watch?v=YyDnYaFtRS0)
+
+
+
+App Compatibility
+  No more calls to private APIs (private and @hide)
+  Enforced at runtime -> toasts and logs for illegal calls
+
+  Blacklist vs dark greylist vs light greylist
+
+See also
+  ADB Episode 89: Upon Reflection (https://player.fm/series/android-developers-backstage/episode-89-upon-reflection)
+  https://developer.android.com/preview/restrictions-non-sdk-interfaces
+
+
+
+NDK
+  r17
+    - Neural Networks API
+    - JNI Shared Memory API
+    - Rootless ASAN, support for UBSAN
+    - Removes ARMSv5, MIPS and MIPS64
+
+  r18
+    - GCC deprecated
+
+  simpleperf CPU profiler
+
+
+
+
+Camera
+  New APIS like OIS timestamps and display based flash
+  External USB Cameras
+  Multi-camra support (2 or more physical cameras)
+
+
+
+ImageDecoder
+  Bitmaps and drawables, including AnimatedImageDrawable
+
+  new concepts:
+    - source
+    - post processor
+    - header listener
+
+
+
+Media
+  - builtin support for HDR VP9
+  - HEIF
+    - based on hte HEVC/H.265 codec
+    - can store a sequence of images
+    - .heif or .heic
+
+
+
+Vulkan
+  Vulkan 1.1
+
+
+
+Neural Networks API 1.1
+  New APIs
+    - C API designed for ML
+    - On-device inference
+  Hardware accelerated on Pixel 2 with Qualcom Hexagon DSP
+    - fp16 support
+
+
+
+ARCore
+  AR in the Emulator
+  Sceneform
+
+See also
+  AR apps: build, iterate, and launch (https://www.youtube.com/watch?v=XLvl8CvwHqI)
+  What's new in AR (https://www.youtube.com/watch?v=MeZcQguH124)
+
+
+

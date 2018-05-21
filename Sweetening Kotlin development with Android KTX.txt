@@ -1,0 +1,42 @@
+Android Jetpack: sweetening Kotlin development with Android KTX
+https://www.youtube.com/watch?v=st1XVfkDWqk
+
+KTX Principles
+	- Adapt existing functionality and redirect features upsteam
+	- Default to inline unless code size or allocation is prohibitive
+	- Leverage features unique to Kotlin
+	- No: Code golf APIs to be as short as possible
+	- No: Optimize for a single and/ or specific use case
+
+
+Build Kotlin-friendly libraries (26:53)
+	- Port public API or entire library to Kotlin
+	- Ship sibling artifact with Kotlin extensions
+
+
+Java code to Kotlin extension (29:30)
+
+KEEP-110 annotations (https://github.com/Kotlin/KEEP/issues/110)
+
+	class TextUtils {
+		@ExtensionFunction
+		static boolean isDigitsOnly(@NonNull CharSEquence str) {
+			int len = str.length();
+			// ...
+		}
+	}
+
+
+	class View {
+		void setPadding(
+			@KtName("left") @DefaultValue("paddingLeft") int left,
+			@KtName("top") @DefaultValue("paddingTop") int top,
+			@KtName("right") @DefaultValue("paddingRight") int right,
+			@KtName("bottom") @DefaultValue("paddingBottom") int bottm
+		)
+	}
+
+
+
+
+

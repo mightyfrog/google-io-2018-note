@@ -1,0 +1,82 @@
+Android Jetpack: what's new in Architecture Components
+https://www.youtube.com/watch?v=pErTyQpA390
+
+Architecture: (2:29)
+  - Data Binding
+  - Lifecycles
+  - LiveData
+  - Navigation (new)
+  - Pagin (new)
+  - Room
+  - ViewModel
+  - WorkManager (new)
+
+
+Jetpack Diagram (2:50)
+
+
+What's new (3:10)
+
+Lifecycle (3:40) <--- hardest part of android development according to dev survey
+
+Uber AutoDispose sample (5:35)
+  rx.users
+   .autoDisposable(getViewLifecycleOwner()) <--- manages subscription
+   .subscribe(adapter::submitList)
+
+
+Fragment's view lifecycle (5:50)
+
+
+Data Binding (8:05)
+
+
+Room (9:40)
+ Room 1.1. with WAL (Write-Ahead Logging, https://www.sqlite.org/wal.html)
+
+ @RawQuery (10:42) returns DAO (@Query returns Cursor)
+
+
+Paging (13:00)
+  Lazy loading for RecyclerView
+
+  RxJava support (15:25)
+
+  Features:
+    - From database
+    - From network
+    - From database + network
+
+See also
+  Android Jetpack: manage infinite lists with RecyclerView and Paging (https://www.youtube.com/watch?v=BE5bsyGGLf4)
+
+
+Navigation (16:10)
+  Easy in-app navigation
+
+  Challenges for navigation:
+    - passing arguments
+    - fragment transactions
+    - up and back
+    - deep links
+    - testing
+
+
+WorkManager (21:50)
+  Deferrable guaranteed execution
+    - Sending a tweet
+    - Uploading logs
+    - Periodic data sync
+
+   WorkManager is built on top of these existing functionalities JobScheduler, Firebase Job Displatcher, Alarms
+
+See also
+  Android Jetpack: easy background processing with WorkManager (https://www.youtube.com/watch?v=IrKoBFLwTN0)
+
+
+Areas to be addressed (31:05)
+  - error handling
+  - saved state
+  - fragments and lifecycles
+  - Kotlinification + Kotlin-specific projects
+

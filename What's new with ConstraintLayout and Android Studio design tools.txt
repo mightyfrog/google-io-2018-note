@@ -1,0 +1,105 @@
+What's new with ConstraintLayout and Android Studio design tools
+https://www.youtube.com/watch?v=ytZteMo4ETk
+
+Conversion
+  Refactoring of Views
+
+Navigate to included layout <include>
+
+
+An icon is worth a thousand lines: Using the numerous menus provided in the layout editor can save some time, especially for batch actions.
+
+
+Menu options screenshot (3:23)
+
+
+Sample Data (3:45)
+
+Tools attribute examples (4:05)
+
+Design time attributes (4:55)
+
+Custom sample data (8:30)
+  Create a "sampledata" directory in the app top level directory. Then create a file with one sample value per line. New -> Sample Data Directory
+
+How to include custom lists (9:20)
+How to include custom images (9:43)
+How to include custom json (9:57)
+
+Predefined Sample Data (11:04)
+
+
+Sample Data UI (11:44)
+
+
+ConstraintLayout (14:50)
+
+ConstraintLayout 2.0 (17:04)
+
+ConstraintHelper (18:43)
+  3 main categories of helpers
+  	- layout manipulation
+  	- post-layout manipulation
+  	- rendering or decorating
+
+Circular Reveal (23:04)
+
+Decorators (23:49)
+
+  Lava Decorator (24:59)
+
+  Bottom Panel (25:15)
+
+  All Together (25:50)
+
+
+Layout Management (26:58)
+	- centralize multiple layouts in a single XML
+	- allows to easily initialize and deal with different representations for your layout
+	- size qualifiers & live resize
+
+
+	State XML: Size Qualifiers
+
+	<ConstraintLayoutStates>
+		<State
+			app:constraints="@layout/layout_small">
+			<Constraints
+				app:constraints="@layout/layout_small"
+				app:region_widthLessThan="550dp" />
+			<Constraints
+				app:constraints="@layout/layout_large"
+				app:region_widthLessThan="450dp" />
+		</State>
+	</ConstraintLayoutStates>
+
+	@Override
+	public void onConfigurationChanged(onfiguration newConfig) {
+		super.onConfigurationChanged(newConifg)
+		cl.setState(newConfig.screenWdithDp, newConfig.screenHeightDp);
+	}
+
+	cl.setOnConstraintsChanged(new ConstraintsChangedListener() {
+		@Override
+		public void preLayoutChange(int state, int layoutId) {
+			TransitoinManager.beginDelayedTransition(cl);
+		}
+	});
+
+
+MotionLayout (29:15)
+	A subclass of ConstraintLayout
+
+	Keyframe (32:43)
+
+	Advanced Features (33:00)
+
+	Synchronized movements (33:33)
+		KeyCycles (34:00)
+
+
+Motion Editor (34:42)
+
+Codelabs
+	/chromeos-resizing
+	/android-navigation

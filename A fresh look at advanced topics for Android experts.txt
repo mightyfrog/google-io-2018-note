@@ -1,0 +1,10 @@
+Protips: a fresh look at advanced topics for Android experts
+https://www.youtube.com/watch?v=eHjHlujp3Tg
+
+Well Aged Advice (9:35)
+	- Prioritize efficiency
+	- Avoid WakeLocks
+	- Don't use undocumented APIs
+	- Store strigs and values as resources
+	- Avoid transmitting / storing contacts & location
+
