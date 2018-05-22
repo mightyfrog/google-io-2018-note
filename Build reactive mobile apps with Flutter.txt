@@ -1,0 +1,73 @@
+Build reactive mobile apps with Flutter
+https://www.youtube.com/watch?v=RS36gBEp8OI
+
+Dart can pass a function as an argument to a function. (7:20)
+
+
+Accessing state / Updting on change (8:50)
+	- Inherited Widget
+		- progpaget data down the tree
+		- update widgets on rebuild
+
+	Inherting state diagram (10:10)
+
+	class MyInheritedWidget extends InheritedWidget {
+		final Data state;
+	}
+
+	Widget build(BuildContext context) =>
+		return MyInheritedWidget(
+			state: mState,
+			child: WidgetTree(...)
+		);
+
+	Widget build(BuildContext context) {
+		final state = MyInheritedWidget.of(context).state;
+		...
+	}
+
+Mutating state (11:00)
+	- Scoped Model (11:18)
+		- external package
+		- buld on InheritedWidget
+		- access, update & mutate
+
+
+The Shopping Cart demo (12:00)
+
+	Set rebuildOnChange: false to prevent non-updating widgets from getting rebuilt. (17:00)
+
+
+Streams (18:35)
+
+	Streams ~= Observable
+
+	var lines = file
+		.openRead()
+		.transform(utf8.decoder)
+		.transform(const LineSplitter());
+
+	StreamBuilder (20:35)
+
+		StreamBuilder<T> (
+			stream: input,
+			builder: (context, snapshot) {
+				...
+			}
+		);
+
+	Buisiness logic component -> bloc
+
+	AwkwardWidget sample (29:10)
+		- fix (29:25)
+
+	Options (31:50)
+		- setState()
+		- Scope Model
+		- Redux
+
+	Widgets + Streams = Reactive
+
+
+https://flutter.io/cookbook
+https://github.com/filiph/state_experiments
