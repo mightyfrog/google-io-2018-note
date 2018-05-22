@@ -1,0 +1,26 @@
+How to incorporate what's new with Material Design in your code base
+https://www.youtube.com/watch?v=D7LB-QPxH9c
+
+Material Design Guidance (1:50)
+
+
+MDC: Matrial Design Components (3:35)
+	- Android
+	- iOS
+	- Flutter
+	- Web (css, javascript)
+	- React
+
+
+MDC is open source (https://github.com/material-components)
+
+
+Material Theme Editor: Sketch plugin (7:00)
+	Gallery (7:30)
+
+
+Using MDC in your code base (8:30)
+
+
+Why use MDC? (18:45)
+	

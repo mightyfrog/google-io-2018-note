@@ -1,0 +1,54 @@
+What's new in Android development tools
+https://www.youtube.com/watch?v=WxAZk7A7OkM
+
+AS 3.1
+	800+ bugs & stability issues addressed
+
+	SQL code editing support
+
+	Kotlin lint checks
+
+	C++ CPU profiler
+
+	Network threading profiler
+
+	IntelliJ platform update
+
+	Emulator quick boot
+
+
+AS 3.2
+	Android P developer preview
+
+	Android app bundle
+
+	Android Jetpack
+
+
+Android App Bundle (28:30)
+	android {
+		bundle {
+			density.enableSplit = true
+			abi.enableSplit = true
+			language.enableSplit = true
+		}
+	}
+
+
+AndroidX Refactoring (29:15)
+	#flag to enable andoidX build support
+	android.useAndroidX = true
+
+	#flag to enable Maven library conversion
+	android.enableJetifier = true
+
+
+D8 & R8: Default Dexer & New Optimizer (30:28)
+	#default D8 with desugaring dexer
+	android.enableD8 = true
+
+	#experimental R8 shrinker & optimizer
+	android.enableR8 = true
+
+
+Andrid Studio 3.2 New Features (32:50)
