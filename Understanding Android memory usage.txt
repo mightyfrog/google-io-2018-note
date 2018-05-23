@@ -1,0 +1,97 @@
+Understanding Android memory usage
+https://www.youtube.com/watch?v=w7K0jio8afM
+
+How memory use impacts a device (2:30)
+	Physical memory on device diagram (2:50) - each page is 4kb
+
+	memory free  ->  page reclaim (kswapd)  ->  low memory (killer, lmk)
+
+	Android process list and the low memory killer (5:40)
+		Highest priority
+			Native: init, kswapd, netd, logd, adbd, installd, ...
+			System: system_server
+			Persistent: telephony, NFC, SMS, ...
+			Foreground: foreground apps
+			Perceptible: perceptible apps
+			Service: services
+			Home: home app
+			Previous: previously used app (one)
+			Caches: cached apps (many)
+		Lowest priority
+
+2GB device under memory pressure diagram (11:10)
+
+
+Application memory impact (12:30)
+
+Application memory impact with shared pages (13:00)
+	- App might shareing memory with Google Play Services
+
+	- how to resolve responsibility of shared memory:
+		- Resident Set Size (RSS)
+			- app fully responsible for shared pages
+		- Proportional Set Size (PSS)
+			- app proportionally responsible for shared pages
+		- Unque Set Size (USS)
+			- app not responsbiel for shared pages...
+
+	- PSS avoids overcounting or undercounting the overall impact of shared pages on a device.
+
+	- adb shell dumpsys meminfo -s [pid]
+			App Summary
+		                      Pss(KB)
+		                       ------
+		          Java Heap:    10536
+		        Native Heap:    69440
+		               Code:    21764
+		              Stack:     1236
+		           Graphics:    33284
+		      Private Other:     7388
+		             System:    11601
+
+		              TOTAL:   155249
+
+	User value/memory impact tradeoff diagram (18:45)
+
+	Memory impact depends on a bunch of things (20:10)
+		- application use case
+		- platform configuration
+		- device memory pressure
+
+
+	Gmail memory for various app use cases (20:50)
+		- it's pointless to compare memory state at different app states.
+
+	Gmail memory for varoius platform config (21:50)
+
+	Chrome PSS under increasing memory pressure (23:40)
+		- PSS values can only be compared at the saem device memory pressure.
+
+
+Reducing your application's memory impact (26:10)
+	- Android Studio's memory profiler
+		- profile your java heap
+		- focus on the 'app' heap (nothing you can do with zygote and image heaps)
+
+	- Should we use platform tools for that? (29:10)
+		- dumpsys meminfo -a, showmap, ahat, debug malloc
+		- These tools aren't well supported
+		- Their user interfaces are clumsy
+		- This approach requires deep platform expertise
+		- You may need a rooted device, or to build the platform yourself
+		- A lot of the memory use you'll see is outside of your control anyway
+
+My advice (32:50)
+	- Profile your Java heap
+	- Reduce your APK size
+		- Things that take space in your APK tend to take memory at runtime too (35:10)
+		- Reliably measuring APK size is much easier than reliably measuring memory!
+
+
+
+See also
+	Best Practices to Slim Down Your App Size (I/O 2017)
+	https://www.youtube.com/watch?v=AdfKNgyT438
+
+	Improve app performance with Android Studio Profilers
+	https://www.youtube.com/watch?v=O5V9ZSL0BsM

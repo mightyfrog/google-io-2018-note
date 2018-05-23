@@ -1,0 +1,20 @@
+Total mobile development made fun with Flutter and Firebase
+https://www.youtube.com/watch?v=p4yLzYwy_4g
+
+*live coding session
+
+
+"new" is optional since Dart 2.0. (11:00)
+
+var documents = snapshot.data?.documents ?? [] // assign an empty list if documents is null
+
+where operator
+
+
+Hot Restart (28:15)
+
+
+async functions in Dart (29:50)
+
+
+https://github.com/emshack/sufficient_goldfish
